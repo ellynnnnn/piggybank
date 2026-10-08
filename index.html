@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -8,263 +10,540 @@
 
 <style>
 
+/* =====================================================
+   PERSONNALISATION
+   ===================================================== */
+
+:root {
+
+    /* COULEUR DE LA JAUGE */
+    --progress-color: #fb9ceb;
+
+    /* COULEUR DU TEXTE */
+    --text-color: #202124;
+
+    /* TEXTE SECONDAIRE */
+    --muted-color: #999999;
+
+    /* PARTIE VIDE DE LA JAUGE */
+    --gauge-background: #EDEDED;
+
+    /* BORDURES */
+    --border-color: #E5E5E5;
+
+}
+
+
+/* =====================================================
+   RESET
+   ===================================================== */
+
 * {
     box-sizing: border-box;
 }
 
+
+html,
 body {
+
+    width: 100%;
+    height: 100%;
+
     margin: 0;
-    padding: 24px;
-    background: #f2f2f2;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #202124;
+    padding: 0;
+
+    background: #FFFFFF;
+
 }
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: var(--text-color);
+
+    overflow: hidden;
+
+}
+
+
+/* =====================================================
+   WIDGET
+   ===================================================== */
 
 .piggy-card {
+
     width: 100%;
-    max-width: 650px;
-    margin: auto;
-    background: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-radius: 32px;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    background: #FFFFFF;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 24px;
+
     overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
 }
 
-/* -------------------------
+
+/* =====================================================
    HEADER
-------------------------- */
+   ===================================================== */
 
 .top {
-    padding: 30px;
+
+    padding: 20px 22px 16px;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: flex-start;
-    gap: 20px;
+
+    gap: 15px;
+
+    flex-shrink: 0;
+
 }
+
 
 .eyebrow {
-    font-size: 13px;
-    letter-spacing: 0.08em;
+
+    font-size: 11px;
+
+    letter-spacing: 0.09em;
+
     text-transform: uppercase;
-    color: #999;
-    margin-bottom: 9px;
+
+    color: var(--muted-color);
+
+    margin-bottom: 6px;
+
 }
+
 
 .amount {
-    font-size: 46px;
+
+    font-size: clamp(28px, 6vw, 40px);
+
     line-height: 1;
+
     font-weight: 300;
+
     letter-spacing: -0.04em;
+
 }
+
 
 .target {
-    font-size: 14px;
-    color: #999;
-    margin-top: 9px;
+
+    font-size: 12px;
+
+    color: var(--muted-color);
+
+    margin-top: 7px;
+
 }
+
 
 .percent {
-    font-size: 30px;
+
+    font-size: clamp(20px, 4vw, 27px);
+
     font-weight: 300;
+
     letter-spacing: -0.03em;
+
     text-align: right;
+
 }
+
 
 .percent-label {
-    font-size: 11px;
+
+    font-size: 9px;
+
     text-transform: uppercase;
+
     letter-spacing: 0.08em;
-    color: #999;
-    margin-top: 5px;
+
+    color: var(--muted-color);
+
+    margin-top: 4px;
+
     text-align: right;
+
 }
 
-/* -------------------------
-   PROGRESS BAR
-------------------------- */
+
+/* =====================================================
+   JAUGE
+   ===================================================== */
 
 .gauge-wrap {
-    padding: 0 30px 30px;
+
+    padding: 0 22px 19px;
+
+    flex-shrink: 0;
+
 }
+
 
 .gauge {
-    height: 13px;
-    background: #ededed;
+
+    width: 100%;
+
+    height: 9px;
+
+    background: var(--gauge-background);
+
     border-radius: 999px;
+
     overflow: hidden;
+
 }
+
 
 .fill {
+
     height: 100%;
+
     width: 0%;
-    background: #222;
+
+    background: var(--progress-color);
+
     border-radius: 999px;
+
     transition: width 0.4s ease;
+
 }
+
 
 .scale {
+
     display: flex;
+
     justify-content: space-between;
-    margin-top: 10px;
-    font-size: 11px;
-    color: #aaa;
+
+    margin-top: 7px;
+
+    font-size: 9px;
+
+    color: #AAAAAA;
+
 }
 
-/* -------------------------
+
+/* =====================================================
    DIVIDER
-------------------------- */
+   ===================================================== */
 
 .divider {
+
+    width: 100%;
+
     height: 1px;
-    background: #e5e5e5;
+
+    background: var(--border-color);
+
+    flex-shrink: 0;
+
 }
 
-/* -------------------------
+
+/* =====================================================
    ACTIONS
-------------------------- */
+   ===================================================== */
 
 .actions {
-    padding: 25px 30px 30px;
+
+    padding: 18px 22px 20px;
+
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
 }
+
 
 .input-label {
+
     display: block;
-    font-size: 12px;
-    color: #999;
+
+    font-size: 10px;
+
+    color: var(--muted-color);
+
     text-transform: uppercase;
+
     letter-spacing: 0.07em;
-    margin-bottom: 9px;
+
+    margin-bottom: 7px;
+
 }
+
 
 .amount-input {
+
     width: 100%;
-    height: 54px;
-    border: 1px solid #e5e5e5;
-    border-radius: 16px;
-    background: #fafafa;
-    padding: 0 16px;
-    font-size: 20px;
-    color: #202124;
+
+    height: 43px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 12px;
+
+    background: #FAFAFA;
+
+    padding: 0 13px;
+
+    font-size: 16px;
+
+    color: var(--text-color);
+
     outline: none;
+
 }
+
 
 .amount-input:focus {
-    border-color: #aaa;
-    background: white;
+
+    border-color: #AAAAAA;
+
+    background: #FFFFFF;
+
 }
 
-/* -------------------------
-   BUTTONS
-------------------------- */
+
+/* =====================================================
+   BOUTONS
+   ===================================================== */
 
 .buttons {
+
     display: grid;
+
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 12px;
+
+    gap: 8px;
+
+    margin-top: 8px;
+
 }
+
 
 button {
-    height: 50px;
-    border-radius: 15px;
-    border: 1px solid #e5e5e5;
-    font-size: 14px;
+
+    width: 100%;
+
+    height: 40px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border-color);
+
+    font-size: 12px;
+
     cursor: pointer;
-    transition: transform 0.12s ease,
-                background 0.12s ease;
+
+    transition:
+        transform 0.12s ease,
+        background 0.12s ease;
+
 }
+
 
 button:active {
+
     transform: scale(0.98);
+
 }
+
 
 .add {
-    background: #222;
-    color: white;
-    border-color: #222;
+
+    background: var(--text-color);
+
+    color: #FFFFFF;
+
+    border-color: var(--text-color);
+
 }
+
 
 .remove {
-    background: white;
-    color: #222;
+
+    background: #FFFFFF;
+
+    color: var(--text-color);
+
 }
 
-/* -------------------------
-   GOAL
-------------------------- */
+
+/* =====================================================
+   OBJECTIF
+   ===================================================== */
 
 .goal-row {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
-    gap: 12px;
-    margin-top: 22px;
+
+    gap: 10px;
+
+    margin-top: 15px;
+
 }
+
 
 .goal-text {
-    font-size: 12px;
-    color: #999;
+
+    font-size: 10px;
+
+    color: var(--muted-color);
+
 }
+
 
 .goal-input {
-    width: 130px;
-    height: 40px;
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-    padding: 0 11px;
-    font-size: 14px;
+
+    width: 105px;
+
+    height: 32px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 9px;
+
+    padding: 0 9px;
+
+    font-size: 12px;
+
     text-align: right;
+
     outline: none;
+
 }
 
-/* -------------------------
-   STATUS
-------------------------- */
+
+/* =====================================================
+   MESSAGE
+   ===================================================== */
 
 .status {
-    min-height: 18px;
-    margin-top: 12px;
-    font-size: 12px;
-    color: #999;
+
+    min-height: 15px;
+
+    margin-top: 8px;
+
+    font-size: 10px;
+
+    color: var(--muted-color);
+
 }
 
-/* -------------------------
-   MOBILE
-------------------------- */
 
-@media (max-width: 480px) {
+/* =====================================================
+   PETITES LARGEURS
+   ===================================================== */
 
-    body {
-        padding: 10px;
-    }
+@media (max-width: 350px) {
 
     .top {
-        padding: 24px 20px 20px;
-    }
 
-    .amount {
-        font-size: 36px;
+        padding-left: 16px;
+        padding-right: 16px;
+
     }
 
     .gauge-wrap,
     .actions {
-        padding-left: 20px;
-        padding-right: 20px;
+
+        padding-left: 16px;
+        padding-right: 16px;
+
+    }
+
+    .amount {
+
+        font-size: 27px;
+
+    }
+
+    .target {
+
+        font-size: 10px;
+
+    }
+
+}
+
+
+/* =====================================================
+   PETITES HAUTEURS
+   ===================================================== */
+
+@media (max-height: 350px) {
+
+    .top {
+
+        padding-top: 12px;
+        padding-bottom: 10px;
+
+    }
+
+    .gauge-wrap {
+
+        padding-bottom: 12px;
+
+    }
+
+    .actions {
+
+        padding-top: 12px;
+        padding-bottom: 12px;
+
+    }
+
+    .goal-row {
+
+        margin-top: 10px;
+
     }
 
 }
 
 </style>
+
 </head>
 
 
 <body>
 
+
 <div class="piggy-card">
+
 
     <!-- HEADER -->
 
     <div class="top">
+
 
         <div>
 
@@ -272,17 +551,24 @@ button:active {
                 Savings
             </div>
 
+
             <div
                 class="amount"
                 id="savedAmount">
+
                 €0
+
             </div>
 
+
             <div class="target">
+
                 sur un objectif de
+
                 <span id="targetAmount">
                     €5 000
                 </span>
+
             </div>
 
         </div>
@@ -293,11 +579,16 @@ button:active {
             <div
                 class="percent"
                 id="percent">
+
                 0%
+
             </div>
 
+
             <div class="percent-label">
+
                 progression
+
             </div>
 
         </div>
@@ -305,14 +596,11 @@ button:active {
     </div>
 
 
-    <!-- PROGRESS BAR -->
+    <!-- JAUGE -->
 
     <div class="gauge-wrap">
 
-        <div
-            class="gauge"
-            role="progressbar"
-            aria-label="Progression de l'épargne">
+        <div class="gauge">
 
             <div
                 class="fill"
@@ -320,6 +608,7 @@ button:active {
             </div>
 
         </div>
+
 
         <div class="scale">
 
@@ -343,6 +632,7 @@ button:active {
 
     <div class="actions">
 
+
         <label
             class="input-label"
             for="changeAmount">
@@ -364,6 +654,7 @@ button:active {
 
 
         <div class="buttons">
+
 
             <button
                 class="add"
@@ -392,8 +683,11 @@ button:active {
         <div class="goal-row">
 
             <span class="goal-text">
+
                 Modifier mon objectif
+
             </span>
+
 
             <input
                 class="goal-input"
@@ -408,42 +702,44 @@ button:active {
 
         <div
             class="status"
-            id="status"
-            aria-live="polite">
+            id="status">
+
         </div>
 
     </div>
 
+
 </div>
+
 
 
 <script>
 
+
 /* =====================================================
-   PIGGY SAVINGS TRACKER
+   DONNÉES
    ===================================================== */
 
 
-/* -----------------------------------------------------
-   RÉCUPÉRATION DES DONNÉES SAUVEGARDÉES
------------------------------------------------------ */
-
 let saved =
-    Number(localStorage.getItem("piggySaved")) || 0;
 
+    Number(
+        localStorage.getItem("piggySaved")
+    ) || 0;
 
-/* -----------------------------------------------------
-   OBJECTIF INITIAL
-   Change 5000 ici si nécessaire.
------------------------------------------------------ */
 
 let goal =
-    Number(localStorage.getItem("piggyGoal")) || 5000;
+
+    Number(
+        localStorage.getItem("piggyGoal")
+    ) || 5000;
 
 
-/* -----------------------------------------------------
-   ÉLÉMENTS HTML
------------------------------------------------------ */
+
+/* =====================================================
+   ÉLÉMENTS
+   ===================================================== */
+
 
 const savedAmount =
     document.getElementById("savedAmount");
@@ -476,9 +772,11 @@ const status =
     document.getElementById("status");
 
 
-/* -----------------------------------------------------
-   FORMATAGE DES EUROS
------------------------------------------------------ */
+
+/* =====================================================
+   FORMAT EURO
+   ===================================================== */
+
 
 function euro(number) {
 
@@ -494,9 +792,11 @@ function euro(number) {
 }
 
 
-/* -----------------------------------------------------
+
+/* =====================================================
    SAUVEGARDE
------------------------------------------------------ */
+   ===================================================== */
+
 
 function saveData() {
 
@@ -513,96 +813,109 @@ function saveData() {
 }
 
 
-/* -----------------------------------------------------
-   MISE À JOUR DE L'INTERFACE
------------------------------------------------------ */
+
+/* =====================================================
+   AFFICHAGE
+   ===================================================== */
+
 
 function render() {
 
-    /* Empêche l'épargne de devenir négative */
 
-    saved = Math.max(0, saved);
-
-    /* L'objectif doit toujours être positif */
-
-    goal = Math.max(1, goal);
+    saved = Math.max(
+        0,
+        saved
+    );
 
 
-    /* Calcul du pourcentage */
+    goal = Math.max(
+        1,
+        goal
+    );
+
 
     const percentage =
+
         Math.min(
             100,
             (saved / goal) * 100
         );
 
 
-    /* Montants */
-
     savedAmount.textContent =
         euro(saved);
 
+
     targetAmount.textContent =
         euro(goal);
+
 
     scaleTarget.textContent =
         euro(goal);
 
 
-    /* Pourcentage */
-
     percent.textContent =
-        Math.round(percentage) + "%";
 
+        Math.round(
+            percentage
+        ) + "%";
 
-    /* Jauge */
 
     fill.style.width =
         percentage + "%";
 
 
-    /* Message */
+    /* MESSAGE */
+
 
     if (saved >= goal) {
 
         status.textContent =
             "Objectif atteint ✦";
 
-    } else if (saved > 0) {
+    }
+
+    else if (saved > 0) {
 
         const remaining =
             goal - saved;
 
         status.textContent =
+
             "Encore " +
             euro(remaining) +
             " pour atteindre ton objectif.";
 
-    } else {
+    }
+
+    else {
 
         status.textContent =
+
             "Commence à épargner pour faire monter la jauge.";
 
     }
 
-
-    /* Sauvegarde automatique */
 
     saveData();
 
 }
 
 
-/* -----------------------------------------------------
-   RÉCUPÉRER LE MONTANT À AJOUTER / RETIRER
------------------------------------------------------ */
+
+/* =====================================================
+   MONTANT
+   ===================================================== */
+
 
 function getAmount() {
 
     const value =
+
         Number.parseFloat(
             changeAmount.value
         );
+
 
     if (
         !Number.isFinite(value) ||
@@ -613,14 +926,17 @@ function getAmount() {
 
     }
 
+
     return value;
 
 }
 
 
-/* -----------------------------------------------------
-   AJOUTER DE L'ARGENT
------------------------------------------------------ */
+
+/* =====================================================
+   AJOUTER
+   ===================================================== */
+
 
 addButton.addEventListener(
     "click",
@@ -648,9 +964,11 @@ addButton.addEventListener(
 );
 
 
-/* -----------------------------------------------------
-   RETIRER DE L'ARGENT
------------------------------------------------------ */
+
+/* =====================================================
+   RETIRER
+   ===================================================== */
+
 
 removeButton.addEventListener(
     "click",
@@ -676,16 +994,17 @@ removeButton.addEventListener(
                 saved - amount
             );
 
-
         render();
 
     }
 );
 
 
-/* -----------------------------------------------------
+
+/* =====================================================
    MODIFIER L'OBJECTIF
------------------------------------------------------ */
+   ===================================================== */
+
 
 goalInput.value = goal;
 
@@ -705,7 +1024,8 @@ goalInput.addEventListener(
             newGoal <= 0
         ) {
 
-            goalInput.value = goal;
+            goalInput.value =
+                goal;
 
             status.textContent =
                 "L'objectif doit être supérieur à 0 €.";
@@ -723,13 +1043,18 @@ goalInput.addEventListener(
 );
 
 
-/* -----------------------------------------------------
+
+/* =====================================================
    INITIALISATION
------------------------------------------------------ */
+   ===================================================== */
+
 
 render();
 
+
 </script>
 
+
 </body>
+
 </html>
