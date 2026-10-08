@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Piggy — Savings Tracker</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px;
+    background: #f2f2f2;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #202124;
+}
+
+.piggy-card {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 32px;
+    overflow: hidden;
+}
+
+/* -------------------------
+   HEADER
+------------------------- */
+
+.top {
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 9px;
+}
+
+.amount {
+    font-size: 46px;
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+}
+
+.target {
+    font-size: 14px;
+    color: #999;
+    margin-top: 9px;
+}
+
+.percent {
+    font-size: 30px;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    text-align: right;
+}
+
+.percent-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #999;
+    margin-top: 5px;
+    text-align: right;
+}
+
+/* -------------------------
+   PROGRESS BAR
+------------------------- */
+
+.gauge-wrap {
+    padding: 0 30px 30px;
+}
+
+.gauge {
+    height: 13px;
+    background: #ededed;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    width: 0%;
+    background: #222;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+.scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #aaa;
+}
+
+/* -------------------------
+   DIVIDER
+------------------------- */
+
+.divider {
+    height: 1px;
+    background: #e5e5e5;
+}
+
+/* -------------------------
+   ACTIONS
+------------------------- */
+
+.actions {
+    padding: 25px 30px 30px;
+}
+
+.input-label {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 9px;
+}
+
+.amount-input {
+    width: 100%;
+    height: 54px;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    background: #fafafa;
+    padding: 0 16px;
+    font-size: 20px;
+    color: #202124;
+    outline: none;
+}
+
+.amount-input:focus {
+    border-color: #aaa;
+    background: white;
+}
+
+/* -------------------------
+   BUTTONS
+------------------------- */
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+button {
+    height: 50px;
+    border-radius: 15px;
+    border: 1px solid #e5e5e5;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.12s ease,
+                background 0.12s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.add {
+    background: #222;
+    color: white;
+    border-color: #222;
+}
+
+.remove {
+    background: white;
+    color: #222;
+}
+
+/* -------------------------
+   GOAL
+------------------------- */
+
+.goal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.goal-text {
+    font-size: 12px;
+    color: #999;
+}
+
+.goal-input {
+    width: 130px;
+    height: 40px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 0 11px;
+    font-size: 14px;
+    text-align: right;
+    outline: none;
+}
+
+/* -------------------------
+   STATUS
+------------------------- */
+
+.status {
+    min-height: 18px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #999;
+}
+
+/* -------------------------
+   MOBILE
+------------------------- */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .top {
+        padding: 24px 20px 20px;
+    }
+
+    .amount {
+        font-size: 36px;
+    }
+
+    .gauge-wrap,
+    .actions {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="piggy-card">
+
+    <!-- HEADER -->
+
+    <div class="top">
+
+        <div>
+
+            <div class="eyebrow">
+                Savings
+            </div>
+
+            <div
+                class="amount"
+                id="savedAmount">
+                €0
+            </div>
+
+            <div class="target">
+                sur un objectif de
+                <span id="targetAmount">
+                    €5 000
+                </span>
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div
+                class="percent"
+                id="percent">
+                0%
+            </div>
+
+            <div class="percent-label">
+                progression
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS BAR -->
+
+    <div class="gauge-wrap">
+
+        <div
+            class="gauge"
+            role="progressbar"
+            aria-label="Progression de l'épargne">
+
+            <div
+                class="fill"
+                id="fill">
+            </div>
+
+        </div>
+
+        <div class="scale">
+
+            <span>
+                €0
+            </span>
+
+            <span id="scaleTarget">
+                €5 000
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="divider"></div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+        <label
+            class="input-label"
+            for="changeAmount">
+
+            Montant
+
+        </label>
+
+
+        <input
+            class="amount-input"
+            id="changeAmount"
+            type="number"
+            min="0"
+            step="0.01"
+            value="50"
+            inputmode="decimal"
+            placeholder="50">
+
+
+        <div class="buttons">
+
+            <button
+                class="add"
+                id="addButton"
+                type="button">
+
+                + Ajouter
+
+            </button>
+
+
+            <button
+                class="remove"
+                id="removeButton"
+                type="button">
+
+                − Retirer
+
+            </button>
+
+        </div>
+
+
+        <!-- OBJECTIF -->
+
+        <div class="goal-row">
+
+            <span class="goal-text">
+                Modifier mon objectif
+            </span>
+
+            <input
+                class="goal-input"
+                id="goalInput"
+                type="number"
+                min="1"
+                step="1"
+                value="5000">
+
+        </div>
+
+
+        <div
+            class="status"
+            id="status"
+            aria-live="polite">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   PIGGY SAVINGS TRACKER
+   ===================================================== */
+
+
+/* -----------------------------------------------------
+   RÉCUPÉRATION DES DONNÉES SAUVEGARDÉES
+----------------------------------------------------- */
+
+let saved =
+    Number(localStorage.getItem("piggySaved")) || 0;
+
+
+/* -----------------------------------------------------
+   OBJECTIF INITIAL
+   Change 5000 ici si nécessaire.
+----------------------------------------------------- */
+
+let goal =
+    Number(localStorage.getItem("piggyGoal")) || 5000;
+
+
+/* -----------------------------------------------------
+   ÉLÉMENTS HTML
+----------------------------------------------------- */
+
+const savedAmount =
+    document.getElementById("savedAmount");
+
+const targetAmount =
+    document.getElementById("targetAmount");
+
+const scaleTarget =
+    document.getElementById("scaleTarget");
+
+const percent =
+    document.getElementById("percent");
+
+const fill =
+    document.getElementById("fill");
+
+const changeAmount =
+    document.getElementById("changeAmount");
+
+const goalInput =
+    document.getElementById("goalInput");
+
+const addButton =
+    document.getElementById("addButton");
+
+const removeButton =
+    document.getElementById("removeButton");
+
+const status =
+    document.getElementById("status");
+
+
+/* -----------------------------------------------------
+   FORMATAGE DES EUROS
+----------------------------------------------------- */
+
+function euro(number) {
+
+    return new Intl.NumberFormat(
+        "fr-FR",
+        {
+            style: "currency",
+            currency: "EUR",
+            maximumFractionDigits: 2
+        }
+    ).format(number);
+
+}
+
+
+/* -----------------------------------------------------
+   SAUVEGARDE
+----------------------------------------------------- */
+
+function saveData() {
+
+    localStorage.setItem(
+        "piggySaved",
+        saved
+    );
+
+    localStorage.setItem(
+        "piggyGoal",
+        goal
+    );
+
+}
+
+
+/* -----------------------------------------------------
+   MISE À JOUR DE L'INTERFACE
+----------------------------------------------------- */
+
+function render() {
+
+    /* Empêche l'épargne de devenir négative */
+
+    saved = Math.max(0, saved);
+
+    /* L'objectif doit toujours être positif */
+
+    goal = Math.max(1, goal);
+
+
+    /* Calcul du pourcentage */
+
+    const percentage =
+        Math.min(
+            100,
+            (saved / goal) * 100
+        );
+
+
+    /* Montants */
+
+    savedAmount.textContent =
+        euro(saved);
+
+    targetAmount.textContent =
+        euro(goal);
+
+    scaleTarget.textContent =
+        euro(goal);
+
+
+    /* Pourcentage */
+
+    percent.textContent =
+        Math.round(percentage) + "%";
+
+
+    /* Jauge */
+
+    fill.style.width =
+        percentage + "%";
+
+
+    /* Message */
+
+    if (saved >= goal) {
+
+        status.textContent =
+            "Objectif atteint ✦";
+
+    } else if (saved > 0) {
+
+        const remaining =
+            goal - saved;
+
+        status.textContent =
+            "Encore " +
+            euro(remaining) +
+            " pour atteindre ton objectif.";
+
+    } else {
+
+        status.textContent =
+            "Commence à épargner pour faire monter la jauge.";
+
+    }
+
+
+    /* Sauvegarde automatique */
+
+    saveData();
+
+}
+
+
+/* -----------------------------------------------------
+   RÉCUPÉRER LE MONTANT À AJOUTER / RETIRER
+----------------------------------------------------- */
+
+function getAmount() {
+
+    const value =
+        Number.parseFloat(
+            changeAmount.value
+        );
+
+    if (
+        !Number.isFinite(value) ||
+        value <= 0
+    ) {
+
+        return 0;
+
+    }
+
+    return value;
+
+}
+
+
+/* -----------------------------------------------------
+   AJOUTER DE L'ARGENT
+----------------------------------------------------- */
+
+addButton.addEventListener(
+    "click",
+    function() {
+
+        const amount =
+            getAmount();
+
+
+        if (!amount) {
+
+            status.textContent =
+                "Entre un montant supérieur à 0 €.";
+
+            return;
+
+        }
+
+
+        saved += amount;
+
+        render();
+
+    }
+);
+
+
+/* -----------------------------------------------------
+   RETIRER DE L'ARGENT
+----------------------------------------------------- */
+
+removeButton.addEventListener(
+    "click",
+    function() {
+
+        const amount =
+            getAmount();
+
+
+        if (!amount) {
+
+            status.textContent =
+                "Entre un montant supérieur à 0 €.";
+
+            return;
+
+        }
+
+
+        saved =
+            Math.max(
+                0,
+                saved - amount
+            );
+
+
+        render();
+
+    }
+);
+
+
+/* -----------------------------------------------------
+   MODIFIER L'OBJECTIF
+----------------------------------------------------- */
+
+goalInput.value = goal;
+
+
+goalInput.addEventListener(
+    "change",
+    function() {
+
+        const newGoal =
+            Number.parseFloat(
+                goalInput.value
+            );
+
+
+        if (
+            !Number.isFinite(newGoal) ||
+            newGoal <= 0
+        ) {
+
+            goalInput.value = goal;
+
+            status.textContent =
+                "L'objectif doit être supérieur à 0 €.";
+
+            return;
+
+        }
+
+
+        goal = newGoal;
+
+        render();
+
+    }
+);
+
+
+/* -----------------------------------------------------
+   INITIALISATION
+----------------------------------------------------- */
+
+render();
+
+</script>
+
+</body>
+</html>
